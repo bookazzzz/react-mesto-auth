@@ -22,24 +22,24 @@ function Login(props) {
     }
 
     return (
-        <section className="start-page">
-            <h2 className="start-page__title">Вход</h2>
+        <section className="login-page">
+            <h2 className="login-page__title">Вход</h2>
             <form className="form" name="login" onSubmit={handleSubmit}>
                 <div className="form__section">
                     <label className="form__label"></label>
-                    <input type="email" className="form__item form__item_type_start-page form__item_type_email"
+                    <input type="email" className="form__item form__item_type_login-page form__item_type_email"
                            id="email" name="email" placeholder="Email" required minLength="2" maxLength="40"
                            value={email || ''} onChange={handleChangeEmail}/>
                     <span className="form__input-error" id="email-error"></span>
                 </div>
                 <div className="form__section">
                     <label className="form__label"></label>
-                    <input type="password" className="form__item form__item_type_start-page form__item_type_password"
+                    <input type="password" className="form__item form__item_type_login-page form__item_type_password"
                            id="password" name="password" placeholder="Пароль" required minLength="5" maxLength="15"
                            value={password || ''} onChange={handleChangePassword}/>
                     <span className="form__input-error" id="password-error"></span>
                 </div>
-                <button type="submit" className="form__save form__save_type_start-page">Войти</button>
+                <button type="submit" className="form__button form__button_type_login-page">Войти</button>
             </form>
 
         </section>

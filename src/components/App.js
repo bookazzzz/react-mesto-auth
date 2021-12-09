@@ -12,6 +12,12 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import Login from './Login.js';
 import ProtectedRoute from "./ProtectedRoute";
+import Register from './Register.js';
+import InfoTooltip from './InfoTooltip.js';
+
+import imageGood from '../images/good.png';
+import imageBad from '../images/bad.png';
+import {apiAuth} from "../utils/AuthApi";
 
 function App() {
   //Переменная текущего пользователя 
@@ -22,6 +28,15 @@ function App() {
   const [isEditProfilePopupOpened, setIsEditProfilePopupOpened] = React.useState(false);
   const [isAddCardPopupOpened, setIsAddCardPopupOpened] = React.useState(false);
   const [isImagePopupOpened, setIsImagePopupOpened] = React.useState(false);
+  const [isInfoTooltipOpened, setIsInfoTooltipOpened] =React.useState(false);
+//почта юзера
+  const [userEmail, setIsUserEmail] =React.useState('');
+//Путь пользователя в браузере
+  const history = useHistory();
+
+//состояние попапа infoTooltip передаем текст и картинку
+  const [infoTooltipImg, setIsInfoTooltipImg] =React.useState(imageGood);
+  const [infoTooltipText, setIsInfoTooltipText] =React.useState('Вы успешно зарегистрировались!');
   
   //тут переменная для открытия popup с большой картинкой передаем в нее название и ссылку
   const [selectedCard, setSelectedCard] = React.useState({
@@ -52,6 +67,11 @@ function App() {
     setSelectedCard({ name, link})
   }
 
+  function handleInfoTooltipOpen() {
+    setIsInfoTooltipOpened(true);
+    setIsInfoTooltipImg(imageGood);
+    setIsInfoTooltipText('Вы успешно зарегистрировались!');
+}
   
 //Функция закрытия всех popup
   function closeAllPopups() {
@@ -59,6 +79,7 @@ function App() {
     setIsEditProfilePopupOpened(false);
     setIsAddCardPopupOpened(false);
     setIsImagePopupOpened(false); 
+    setIsInfoTooltipOpened(false); 
   }
 // Хук для получения данных юзера
   React.useEffect(() => {
@@ -156,14 +177,46 @@ function handleUpdateAvatar(data) {
   }
 
 
+  //функция регистрации
+  function handleRegister({email, password}) {
+    apiAuth
+        .register({email, password})
+        .then(response => {
+            console.log(response);
+            handleInfoTooltipOpen();
+        })
+        .catch(err => {
+            console.log(err);
+            handleInfoTooltipOpen();
+            setIsInfoTooltipImg(imageBad);
+            setIsInfoTooltipText('Что-то пошло не так!\n' + 'Попробуйте ещё раз.');
+        })
+}
+
+
+ //функция выхода
+ function signOut(){
+  localStorage.removeItem('jwt');
+  setLoggedIn(false);
+  history.push('/sign-in');
+}
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
     <div className="root">
-      <Header />
+      <Header 
+      loggedIn={loggedIn} 
+      email={userEmail} 
+      onSignOut={signOut}/>
       
       <BrowserRouter>
       <Switch>
       
+      <Route path="/sign-up">
+        <Register onRegister={handleRegister}/>
+      </Route>
+
       <Route path="/sign-in">
         <Login />
       </Route>
@@ -191,6 +244,12 @@ isOpened={isEditProfilePopupOpened}
 onPopupClick={handlePopupOutsideClose}
 onClose={closeAllPopups} 
 onUpdateUser={handleUpdateUser}/>
+{/* popup информации при регистрации */}
+<InfoTooltip 
+  isOpened={isInfoTooltipOpened} 
+  onClose={closeAllPopups} 
+  popupText={infoTooltipText}
+  popupImg={infoTooltipImg} name='infoTooltip'/>
 
 {/* popup добавления карточки */}
  <AddPlacePopup

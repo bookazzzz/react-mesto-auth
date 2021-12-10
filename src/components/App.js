@@ -193,7 +193,52 @@ function handleUpdateAvatar(data) {
         })
 }
 
+    //функция входа
+    function handleLogin({email, password}){
+      apiAuth
+          .authorization({email, password})
+          .then(data => {
+              if(data.token) {
+                  const token = data.token;
+                  localStorage.setItem('jwt', token);
+                  tokenCheck();
+                  setLoggedIn(true);
+              }
+          })
+          .catch(err => {
+              console.log(err);
+          })
+  }
+//Если залогинились, то перейти на главную страницу
+  React.useEffect(() => {
+    if(loggedIn === true) {
+        history.push('/');
+    }
 
+}, [loggedIn]);
+//Проверяем токен после каждого обновления
+React.useEffect(() => {
+  tokenCheck();
+}, []);
+
+
+//Проверяю токен
+  function tokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt){
+        apiAuth
+            .getContent(jwt)
+            .then((data) => {
+            if (data){
+                setIsUserEmail(data.data.email);
+                setLoggedIn(true);
+            }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+  }
  //функция выхода
  function signOut(){
   localStorage.removeItem('jwt');
@@ -218,7 +263,7 @@ function handleUpdateAvatar(data) {
       </Route>
 
       <Route path="/sign-in">
-        <Login />
+        <Login onLogin={handleLogin}/>
       </Route>
 
       <ProtectedRoute

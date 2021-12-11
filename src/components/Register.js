@@ -18,11 +18,14 @@ function Register(props) {
         e.preventDefault();
         props.onRegister({email, password});
 
-        setEmail('');
-        setPassword('');
+        // setEmail('');
+        // setPassword('');
     }
 
-
+    React.useEffect(() => {
+        setEmail('');
+        setPassword('');
+    }, []);
 
     return (
         <section className="login-page">

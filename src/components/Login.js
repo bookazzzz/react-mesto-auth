@@ -17,10 +17,16 @@ function Login(props) {
         e.preventDefault();
         props.onLogin({email, password});
 
+        // setEmail('');
+        // setPassword('');
+    }
+    
+    React.useEffect(() => {
         setEmail('');
         setPassword('');
-    }
+    }, []);
 
+    
     return (
         <section className="login-page">
             <h2 className="login-page__title">Вход</h2>

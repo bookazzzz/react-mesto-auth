@@ -14,7 +14,7 @@ function Header (props) {
       </a>
 
       <div className="header__actions">
-      <BrowserRouter>
+      
                 <Switch>
                     <Route path="/sign-up">
                         <Link to="/sign-in" className="header__link">Вход</Link>
@@ -29,7 +29,7 @@ function Header (props) {
                         <Link to="/sign-in" onClick={props.onSignOut} className="header__link header__link_type_auth">Выйти</Link>
                     </Route>
                 </Switch>
-                </BrowserRouter>
+                
             </div>
     </header>
     )

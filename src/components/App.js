@@ -255,7 +255,7 @@ React.useEffect(() => {
       email={userEmail} 
       onSignOut={signOut}/>
       
-      <BrowserRouter>
+      
       <Switch>
       
       <Route path="/sign-up">
@@ -282,7 +282,7 @@ React.useEffect(() => {
       />
 
 </Switch>
-</BrowserRouter>
+
 {/* popup редактирования профиля */}
 <EditProfilePopup 
 isOpened={isEditProfilePopupOpened} 

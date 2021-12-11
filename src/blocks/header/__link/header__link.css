@@ -6,6 +6,8 @@
     line-height: 22px;
     color: #FFFFFF;
     text-decoration: none;
+    margin-bottom: 46px;
+    padding-left: 24px;
 }
 
 .header__link:hover {
